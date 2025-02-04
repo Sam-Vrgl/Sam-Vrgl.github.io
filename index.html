@@ -1,274 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Sam Vrgl</title>
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #222;
-      font-family: Arial, Verdana, sans-serif;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      align-items: center;
-    }
-    .desktop-header {
-      font-size: 36px;
-      color: white;
-      text-align: center;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-      margin-top: 140px;
-    }
-    .pong-container {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
-    canvas {
-      background: #000;
-      box-shadow: 0 0 20px #fff;
-    }
-    .mobile-header {
-      display: none;
-      font-size: 36px;
-      color: white;
-      text-align: center;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      margin: 0;
-    }
-    .footer {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      font-size: 14px;
-      color: white;
-    }
-    .footer a {
-      color: white;
-      text-decoration: none;
-    }
-    @media screen and (max-width: 768px) {
-      .container {
-        display: none;
-      }
-      .mobile-header {
-        display: block;
-      }
-      .footer {
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Sam Vrgl</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #222;
+            font-family: Arial, Verdana, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            align-items: center;
+        }
+
+        .desktop-header {
+            font-size: 36px;
+            color: white;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            margin-top: 140px;
+        }
+
+        .pong-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        canvas {
+            background: #000;
+            box-shadow: 0 0 20px #fff;
+        }
+
+        .mobile-header {
+            display: none;
+            font-size: 36px;
+            color: white;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                display: none;
+            }
+
+            .mobile-header {
+                display: block;
+            }
+
+            .footer {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <!-- Desktop layout -->
-  <div class="container">
-    <h2 class="desktop-header">
-      This page is under construction, play some pong while you wait!
-    </h2>
-    <div class="pong-container">
-      <canvas id="pong" width="800" height="400"></canvas>
+    <!-- Desktop layout -->
+    <div class="container">
+        <h2 class="desktop-header">
+            This page is under construction, play some pong while you wait!
+        </h2>
+        <div class="pong-container">
+            <canvas id="pong" width="800" height="400"></canvas>
+        </div>
     </div>
-  </div>
 
-  <!-- Mobile message -->
-  <h2 class="mobile-header">
-    Page under construction, check back soon!
-  </h2>
+    <!-- Mobile message -->
+    <h2 class="mobile-header">
+        Page under construction, check back soon!
+    </h2>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <a href="https://github.com/Sam-Vrgl" target="_blank" rel="noopener noreferrer">
-      &copy; Samuel Vergnol 2025-2025
-    </a>
-  </footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <a href="https://github.com/Sam-Vrgl" target="_blank" rel="noopener noreferrer">
+            &copy; Samuel Vergnol 2025-2025
+        </a>
+    </footer>
 
-  <script>
-    const canvas = document.getElementById("pong");
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
+    <script>
+        const canvas = document.getElementById("pong");
+        if (canvas) {
+            const ctx = canvas.getContext("2d");
 
-      const paddleWidth = 10;
-      const paddleHeight = 100;
-      const paddleSpeed = 8;
+            const paddleWidth = 10;
+            const paddleHeight = 100;
+            const paddleSpeed = 8;
 
-      let leftScore = 0;
-      let rightScore = 0;
+            let leftScore = 0;
+            let rightScore = 0;
 
-      const leftPaddle = {
-        x: 10,
-        y: canvas.height / 2 - paddleHeight / 2,
-        width: paddleWidth,
-        height: paddleHeight,
-        dy: 0,
-        lastDir: -1
-      };
+            const leftPaddle = {
+                x: 10,
+                y: canvas.height / 2 - paddleHeight / 2,
+                width: paddleWidth,
+                height: paddleHeight,
+                targetHitPos: undefined
+            };
 
-      const rightPaddle = {
-        x: canvas.width - paddleWidth - 10,
-        y: canvas.height / 2 - paddleHeight / 2,
-        width: paddleWidth,
-        height: paddleHeight,
-        dy: 0,
-        lastDir: -1
-      };
+            const rightPaddle = {
+                x: canvas.width - paddleWidth - 10,
+                y: canvas.height / 2 - paddleHeight / 2,
+                width: paddleWidth,
+                height: paddleHeight,
+                dy: 0,
+                lastDir: -1
+            };
 
-      const ball = {
-        x: canvas.width / 2,
-        y: canvas.height / 2,
-        radius: 7,
-        speed: 5,
-        dx: 5,
-        dy: 5
-      };
+            const ball = {
+                x: canvas.width / 2,
+                y: canvas.height / 2,
+                radius: 7,
+                speed: 5,
+                dx: 5,
+                dy: 5
+            };
 
-      const keys = {
-        KeyW: false,
-        KeyS: false,
-        ArrowUp: false,
-        ArrowDown: false
-      };
+            const keys = {
+                KeyW: false,
+                KeyS: false,
+                ArrowUp: false,
+                ArrowDown: false
+            };
 
-      function drawRect(x, y, w, h, color = "white") {
-        ctx.fillStyle = color;
-        ctx.fillRect(x, y, w, h);
-      }
+            function drawRect(x, y, w, h, color = "white") {
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, w, h);
+            }
 
-      function drawArc(x, y, r, color = "white") {
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.fill();
-      }
+            function drawArc(x, y, r, color = "white") {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
 
-      function drawNet() {
-        for (let i = 0; i < canvas.height; i += 15) {
-          drawRect(canvas.width / 2 - 1, i, 2, 10, "white");
+            function drawNet() {
+                for (let i = 0; i < canvas.height; i += 15) {
+                    drawRect(canvas.width / 2 - 1, i, 2, 10, "white");
+                }
+            }
+
+            function drawScore() {
+                ctx.fillStyle = "white";
+                ctx.font = "32px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(leftScore, canvas.width / 4, 50);
+                ctx.fillText(rightScore, canvas.width * 3 / 4, 50);
+            }
+
+            function updatePaddleVelocities() {
+                if (keys.ArrowUp && keys.ArrowDown) {
+                    rightPaddle.dy = rightPaddle.lastDir * paddleSpeed;
+                } else if (keys.ArrowUp) {
+                    rightPaddle.dy = -paddleSpeed;
+                    rightPaddle.lastDir = -1;
+                } else if (keys.ArrowDown) {
+                    rightPaddle.dy = paddleSpeed;
+                    rightPaddle.lastDir = 1;
+                } else {
+                    rightPaddle.dy = 0;
+                }
+            }
+
+            function update() {
+                updatePaddleVelocities();
+                let targetY;
+                if (ball.dx < 0) {
+                    if (leftPaddle.targetHitPos === undefined) {
+                        let r = Math.random();
+                        const exponent = 1.5;
+                        let offset;
+                        if (r < 0.5) {
+                            offset = -Math.pow(2 * (0.5 - r), exponent);
+                        } else {
+                            offset = Math.pow(2 * (r - 0.5), exponent);
+                        }
+                        leftPaddle.targetHitPos = (leftPaddle.height / 2) * (1 + offset);
+                    }
+                    targetY = ball.y - leftPaddle.targetHitPos;
+                } else {
+                    leftPaddle.targetHitPos = undefined;
+                    targetY = canvas.height / 2 - leftPaddle.height / 2;
+                }
+
+                targetY = Math.max(0, Math.min(targetY, canvas.height - leftPaddle.height));
+
+                leftPaddle.vy = leftPaddle.vy || 0;
+                const smoothingFactor = 0.8;
+                const damping = 0.15;
+                const deadZone = 4;
+
+                let diff = targetY - leftPaddle.y;
+
+                if (Math.abs(diff) > deadZone) {
+                    leftPaddle.vy += diff * smoothingFactor;
+                    leftPaddle.vy *= damping;
+                } else {
+                    leftPaddle.vy = 0;
+                }
+
+                leftPaddle.vy = Math.max(-paddleSpeed, Math.min(paddleSpeed, leftPaddle.vy));
+
+                leftPaddle.y += leftPaddle.vy;
+                leftPaddle.y = Math.max(0, Math.min(leftPaddle.y, canvas.height - leftPaddle.height));
+
+                rightPaddle.y += rightPaddle.dy;
+                rightPaddle.y = Math.max(0, Math.min(rightPaddle.y, canvas.height - rightPaddle.height));
+
+                ball.x += ball.dx;
+                ball.y += ball.dy;
+
+                if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                    ball.dy = -ball.dy;
+                }
+
+                let paddle = ball.x < canvas.width / 2 ? leftPaddle : rightPaddle;
+                if (detectCollision(ball, paddle)) {
+                    let collidePoint = ball.y - (paddle.y + paddle.height / 2);
+                    collidePoint = collidePoint / (paddle.height / 2);
+                    let angleRad = collidePoint * (Math.PI / 4);
+                    let direction = ball.x < canvas.width / 2 ? 1 : -1;
+                    ball.dx = direction * ball.speed * Math.cos(angleRad);
+                    ball.dy = ball.speed * Math.sin(angleRad);
+                    ball.speed += 0.4;
+                }
+
+                if (ball.x - ball.radius < 0) {
+                    rightScore++;
+                    resetBall();
+                } else if (ball.x + ball.radius > canvas.width) {
+                    leftScore++;
+                    resetBall();
+                }
+            }
+
+            function detectCollision(ball, paddle) {
+                return (
+                    ball.x - ball.radius < paddle.x + paddle.width &&
+                    ball.x + ball.radius > paddle.x &&
+                    ball.y - ball.radius < paddle.y + paddle.height &&
+                    ball.y + ball.radius > paddle.y
+                );
+            }
+
+            function resetBall() {
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height / 2;
+                ball.speed = 5;
+                ball.dx = -ball.dx;
+                ball.dy = 5 * (Math.random() > 0.5 ? 1 : -1);
+            }
+
+            function gameLoop() {
+                update();
+                render();
+                requestAnimationFrame(gameLoop);
+            }
+
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawNet();
+                drawRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+                drawRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+                drawArc(ball.x, ball.y, ball.radius);
+                drawScore();
+            }
+
+            gameLoop();
+
+            document.addEventListener("keydown", function (event) {
+                if (event.code in keys) {
+                    keys[event.code] = true;
+                    if (event.code === "ArrowUp") {
+                        rightPaddle.lastDir = -1;
+                    } else if (event.code === "ArrowDown") {
+                        rightPaddle.lastDir = 1;
+                    }
+                }
+            });
+
+            document.addEventListener("keyup", function (event) {
+                if (event.code in keys) {
+                    keys[event.code] = false;
+                }
+            });
         }
-      }
-
-      function drawScore() {
-        ctx.fillStyle = "white";
-        ctx.font = "32px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(leftScore, canvas.width / 4, 50);
-        ctx.fillText(rightScore, canvas.width * 3 / 4, 50);
-      }
-
-      function updatePaddleVelocities() {
-        if (keys.ArrowUp && keys.ArrowDown) {
-          rightPaddle.dy = rightPaddle.lastDir * paddleSpeed;
-        } else if (keys.ArrowUp) {
-          rightPaddle.dy = -paddleSpeed;
-          rightPaddle.lastDir = -1;
-        } else if (keys.ArrowDown) {
-          rightPaddle.dy = paddleSpeed;
-          rightPaddle.lastDir = 1;
-        } else {
-          rightPaddle.dy = 0;
-        }
-      }
-
-      function update() {
-        updatePaddleVelocities();
-        leftPaddle.y = ball.y - leftPaddle.height / 2;
-        leftPaddle.y = Math.max(0, Math.min(leftPaddle.y, canvas.height - leftPaddle.height));
-        rightPaddle.y += rightPaddle.dy;
-        rightPaddle.y = Math.max(0, Math.min(rightPaddle.y, canvas.height - rightPaddle.height));
-
-        ball.x += ball.dx;
-        ball.y += ball.dy;
-
-        if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
-          ball.dy = -ball.dy;
-        }
-
-        let paddle = ball.x < canvas.width / 2 ? leftPaddle : rightPaddle;
-        if (detectCollision(ball, paddle)) {
-          let collidePoint = (ball.y - (paddle.y + paddle.height / 2));
-          collidePoint = collidePoint / (paddle.height / 2);
-          let angleRad = collidePoint * (Math.PI / 4);
-          let direction = ball.x < canvas.width / 2 ? 1 : -1;
-          ball.dx = direction * ball.speed * Math.cos(angleRad);
-          ball.dy = ball.speed * Math.sin(angleRad);
-          ball.speed += 0.2;
-        }
-
-        if (ball.x - ball.radius < 0) {
-          rightScore++;
-          resetBall();
-        } else if (ball.x + ball.radius > canvas.width) {
-          leftScore++;
-          resetBall();
-        }
-      }
-
-      function detectCollision(ball, paddle) {
-        return (
-          ball.x - ball.radius < paddle.x + paddle.width &&
-          ball.x + ball.radius > paddle.x &&
-          ball.y - ball.radius < paddle.y + paddle.height &&
-          ball.y + ball.radius > paddle.y
-        );
-      }
-
-      function resetBall() {
-        ball.x = canvas.width / 2;
-        ball.y = canvas.height / 2;
-        ball.speed = 5;
-        ball.dx = -ball.dx;
-        ball.dy = 5 * (Math.random() > 0.5 ? 1 : -1);
-      }
-
-      function gameLoop() {
-        update();
-        render();
-        requestAnimationFrame(gameLoop);
-      }
-
-      function render() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawNet();
-        drawRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
-        drawRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
-        drawArc(ball.x, ball.y, ball.radius);
-        drawScore();
-      }
-
-      gameLoop();
-
-      document.addEventListener("keydown", function (event) {
-        if (event.code in keys) {
-          keys[event.code] = true;
-          if (event.code === "ArrowUp") {
-            rightPaddle.lastDir = -1;
-          } else if (event.code === "ArrowDown") {
-            rightPaddle.lastDir = 1;
-          }
-        }
-      });
-
-      document.addEventListener("keyup", function (event) {
-        if (event.code in keys) {
-          keys[event.code] = false;
-        }
-      });
-    }
-  </script>
+    </script>
 </body>
+
 </html>
