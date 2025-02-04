@@ -219,12 +219,12 @@
                 targetY = Math.max(0, Math.min(targetY, canvas.height - leftPaddle.height));
 
                 leftPaddle.vy = leftPaddle.vy || 0;
-                const smoothingFactor = 0.8;
-                const damping = 0.15;
-                const deadZone = 4;
+                const smoothingFactor = 1;
+                const damping = 0.8;
+                const deadZone = 6;
 
                 let diff = targetY - leftPaddle.y;
-
+                console.log(diff);
                 if (Math.abs(diff) > deadZone) {
                     leftPaddle.vy += diff * smoothingFactor;
                     leftPaddle.vy *= damping;
