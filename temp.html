@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Samuel Vergnol</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Verdana, Arial, sans-serif;
+            background-color: #001f3f;
+            /* Dark blue background */
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Bar */
+        header {
+            background-color: #001f3f;
+            padding: 20px;
+            border-bottom: 1px solid #fff;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-container h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .socials a {
+            margin-left: 15px;
+            font-size: 0.9em;
+        }
+
+        /* Hero Section */
+        #hero {
+            padding: 40px 20px;
+            background-color: #001f3f;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-text {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .hero-text h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                padding-right: 0;
+            }
+
+            .hero-image {
+                margin-top: 20px;
+                text-align: center;
+            }
+        }
+
+        .logo-container {
+            display: flex;
+            --s: 100px;
+            /* size  */
+            --m: 4px;
+            /* margin */
+            --f: calc(1.732 * var(--s) + 4 * var(--m) - 1px);
+            text-align: start;
+        }
+
+        .hex-container {
+            font-size: 0;
+            width: 400px;
+        }
+
+        .hex-container div {
+            width: var(--s);
+            margin: var(--m);
+            height: calc(var(--s)*1.1547);
+            display: inline-block;
+            vertical-align: top;
+            font-size: initial;
+            clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+            background: white;
+            margin-bottom: calc(var(--m) - var(--s)*0.2885);
+        }
+
+        .hex-container::before {
+            content: "";
+            width: calc(var(--s)/2 + var(--m));
+            float: left;
+            height: 120%;
+            shape-outside: repeating-linear-gradient(#0000 0 calc(var(--f) - 3px),
+                    #000 0 var(--f));
+        }
+
+        .hex-container div:nth-child(6n+1) {
+            background: none;
+        }
+
+        .hex-container div img {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--s)*0.8);
+        }
+
+        .hex-container div img.big {
+            width: calc(var(--s)*0.7);
+        }
+
+        /* Skills Section */
+        #skills {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .skills-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .skills-container img {
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            margin: 50px 0;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #fff;
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+            box-sizing: border-box;
+        }
+
+        /* Default positioning for larger screens */
+        .timeline-item:nth-child(odd) {
+            left: 3px;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: calc(50% - 1px);
+            ;
+            text-align: left;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: #001f3f;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -6px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -6px;
+        }
+
+        /* Contact Form Styles */
+        #contact {
+            margin: 40px 0;
+        }
+
+        .contact-form {
+            background-color: #003366;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 3px;
+        }
+
+        .contact-form input[type="submit"] {
+            background-color: #00509e;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form input[type="submit"]:hover {
+            background-color: #003f7f;
+        }
+
+        /* Responsive adjustments: force timeline items left-aligned */
+        @media (max-width: 768px) {
+            .timeline {
+                padding: 20px 0;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                text-align: left !important;
+                padding: 20px 25px 20px 70px;
+                /* Extra left padding for timeline marker */
+                margin-bottom: 20px;
+            }
+
+            .timeline-item::before {
+                left: 13px !important;
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #fff;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Bar -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="https://sam-vrgl.com">
+                    <h1>Samuel Vergnol</h1>
+                </a>
+            </div>
+            <div class="socials">
+                <a href="www.linkedin.com/in/samuel-vergnol">LinkedIn</a>
+                <a href="https://github.com/Sam-Vrgl">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h2>Full Stack Developer</h2>
+                <p>
+                    Hi, I'm Sam Vergnol—a passionate French Full Stack Development student currently working for Cherry
+                    Biotech.
+                    Having spent over seven years living in the UK, I've embraced a diverse, international perspective
+                    that enhances my problem-solving skills.
+                    <br><br>
+                    I'm not just about code; I actively participate in Capture The Flag (CTF) competitions, consistently
+                    ranking in the top 15%, challenging me to think on my feet and refine my technical abilities.
+                    My journey in tech is fueled by an interest in space exploration, biomedicine, and communication,
+                    pushing me to merge creativity with technical expertise.
+                    <br><br>
+                    Beyond the screen, I enjoy sailing, reading, and puzzle games—activities that nurture my creativity
+                    and analytical thinking.
+                    I stay up-to-date with the latest in AI, coding, and space news, ensuring I remain at the forefront
+                    of innovation.
+                    Let's connect and explore how we can push the boundaries of technology together!
+                </p>
+            </div>
+
+
+            <div class="logo-container">
+                <div class="hex-container">
+                    <div>
+                        <!--Invisible-->
+                    </div>
+                    <div><img src="./media/images/logos/Node.js.png" alt="Node.js" /></div>
+                    <div><img class="big" src="./media/images/logos/HTML5.png" alt="Node.js" /></div>
+                    <div><img src="./media/images/logos/PHP.png" alt="Node.js" /></div>
+                    <div><img src="./media/images/logos/Java.png" alt="Node.js" /></div>
+                    <div><img src="./media/images/logos/Git.png" alt="Node.js" /></div>
+                    <div>
+                        <!--Invisible-->
+                    </div>
+                    <div><img src="./media/images/logos/Docker.png" alt="Node.js" /></div>
+                    <div><img class="big" src="./media/images/logos/MySQL.png" alt="Node.js" /></div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <div class="container">
+        <!-- Personnal Section (if needed) -->
+        <section id="personnal">
+            <!-- Additional content can go here -->
+        </section>
+
+        <!-- Work Experience Timeline -->
+        <section id="work-experience">
+            <h2>Work Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Full Stack Web Developer</h3>
+                    <h4>Cherry Biotech — October 2024 : Present</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Frontend Development Intern</h3>
+                    <h4>Siplec — May 2024 : August 2024</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Frontend Intern</h3>
+                    <h4>Lucem Digital — April 2023 : July 2023</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Timeline -->
+        <section id="education">
+            <h2>Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Bachelor in Web and Software Development</h3>
+                    <h4>Efrei Paris — 2022 : 2025</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form -->
+        <section id="contact">
+            <h2>Contact</h2>
+            <form class="contact-form" action="mailto:contactform@sam-vrgl.com" method="POST" enctype="text/plain">
+                <input type="text" name="name" placeholder="Your Name" required />
+                <input type="email" name="email" placeholder="Your Email" required />
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                <input type="submit" value="Send" />
+            </form>
+        </section>
+    </div>
+
+    <!-- Footer with Personal Links -->
+    <footer>
+        <div class="footer-links">
+            <a href="www.linkedin.com/in/samuel-vergnol">LinkedIn</a>
+            <a href="https://github.com/Sam-Vrgl">GitHub</a>
+        </div>
+        <p>&copy; 2025 Samuel Vergnol</p>
+    </footer>
+</body>
+
+</html>
